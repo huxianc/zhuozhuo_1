@@ -9,25 +9,6 @@ const borderColors = {
 };
 
 /**
- * @description:
- * @param {String} type
- * @return {Boolean}
- */
-const isImage = type => {
-  return type.startsWith("image");
-};
-
-/**
- * @description:
- * @param {String} type
- * @return {Boolean}
- */
-const isLimitImageType = type => {
-  const imageTypes = ["png", "jpg", "jpeg"];
-  return imageTypes.some(imageTypes => type.endsWith(imageTypes));
-};
-
-/**
  * @description: 拖拽时间绑定
  * @param {HTMLElement} el
  * @return {*}
@@ -81,7 +62,6 @@ function loadCanvas(img) {
  */
 function toGray(ctx) {
   const imgData = ctx.getImageData(0, 0, c_w, c_h);
-  // console.log(imgData);
   const { data } = imgData;
   for (let i = 0; i < data.length; i += 4) {
     const R = data[i];
@@ -113,7 +93,6 @@ function btn1() {
     if (uploadImage) {
       const canvas = document.querySelector("#canvas");
       const base64 = canvas.toDataURL("image/png");
-      // console.log(base64);
       const textarea = document.querySelector("#textarea");
       textarea.value = base64;
       textarea.select();
@@ -214,52 +193,31 @@ function btn4() {
             index++;
           }
         }
-        // changeLoading(false);
+
         // 上传
         const formData = new FormData();
 
         const file = base64ToFile(extraCanvas.toDataURL());
         formData.append("file", file, file.filename);
 
-        const res = await _ajax({
-          url: "/uploadImage",
-          method: "POST",
-          data: formData,
-        });
-        // .then(res => {
-        //   console.log(res);
-        // });
-        tips.append(`${res.msg}，文件名：${res.data.name}`);
+        try {
+          const res = await _ajax({
+            url: "/uploadImage",
+            method: "POST",
+            data: formData,
+          });
+          tips.append(`${res.msg}，文件名：${res.data.name}`);
+        } catch (error) {
+          console.log(error);
+          tips.append(`${error.msg}`, "error");
+        }
+
         changeLoading(false);
       };
     } else {
       tips.append("还没有上传图片，请先上传图片", "info");
     }
   };
-}
-
-/**
- * @description: base64 转文件
- * @param {String} data base64 编码
- * @return {File}
- */
-function base64ToFile(data) {
-  // 将base64 的图片转换成file对象上传 atob将ascii码解析成binary数据
-  let binary = atob(data.split(",")[1]);
-  let mime = data.split(",")[0].match(/:(.*?);/)[1];
-  let array = [];
-  for (let i = 0; i < binary.length; i++) {
-    array.push(binary.charCodeAt(i));
-  }
-  let fileData = new Blob([new Uint8Array(array)], {
-    type: mime,
-  });
-
-  let file = new File([fileData], `${new Date().getTime()}.png`, {
-    type: mime,
-  });
-
-  return file;
 }
 
 /**
@@ -273,7 +231,6 @@ function changeLoading(flag) {
   if (flag) {
     loading.style.display = "block";
     scrollTop = document.documentElement.scrollTop;
-    console.log("scrollTop", scrollTop);
     document.documentElement.scrollTop = 0;
     document.body.style.overflow = "hidden";
   } else {
@@ -281,29 +238,6 @@ function changeLoading(flag) {
     document.body.style.overflow = "auto";
     document.documentElement.scrollTop = scrollTop;
   }
-}
-
-/**
- * @description: 简单的浅层格式化
- * @param {Object} obj
- * @return {String}
- */
-function formateArgs(obj) {
-  const arr = [];
-  Object.keys(obj).forEach(key => {
-    arr.push(`${key}=${obj[key]}`);
-  });
-
-  return arr.join("&");
-}
-
-function downLoad(url, name = "下载图片") {
-  const oA = document.createElement("a");
-  oA.download = name; // 设置下载的文件名，默认是'下载'
-  oA.href = url;
-  document.body.appendChild(oA);
-  oA.click();
-  oA.remove(); // 下载之后把创建的元素删除
 }
 
 /**

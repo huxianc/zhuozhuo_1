@@ -22,7 +22,7 @@ module.exports = app => {
 
   const upload = multer({ storage });
   app.post("/uploadImage", upload.single("file"), async (req, res) => {
-    console.log(req.file);
+    // console.log(req.file);
     const file = req.file;
 
     res.send({
@@ -51,14 +51,15 @@ module.exports = app => {
             msg: error,
           });
         } else {
-          res.send({
+          const sendData = {
             code: 0,
             data: {
               filename: `${date}.txt`,
               fileUrl: `http://localhost:3002/uploadStr/${date}.txt`,
             },
             msg: "上传成功",
-          });
+          }
+          res.send(sendData);
         }
       }
     );
