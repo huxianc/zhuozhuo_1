@@ -1,0 +1,58 @@
+<!--
+ * @Description: 
+ * @Author: huxianc
+ * @Date: 2021-03-13 09:21:52
+ * @LastEditors: huxianc
+ * @LastEditTime: 2021-03-13 09:40:18
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="upload-container">
+        <div class="upload-dragger" id="dragger">
+          <div class="upload-text">
+            将图片拖到此处，或者<span>点击上传</span>
+          </div>
+        </div>
+        <input type="file" name="file" class="upload-input" />
+      </div>
+      <div class="preview-container">
+        <p>预览区域</p>
+        <div id="preview">
+          <canvas id="canvas" width="400" height="300"></canvas>
+
+          <div class="btn-container">
+            <button id="button1">按钮一</button>
+            <button id="button2">按钮二</button>
+            <button id="button3">按钮三</button>
+            <button id="button4">附加题按钮</button>
+          </div>
+
+          <div class="basestr-preview">
+            <p>base64预览：</p>
+            <textarea name="" id="textarea" cols="30" rows="10"></textarea>
+          </div>
+
+          <canvas id="extraCanvas" width="0" height="0"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-container" id="tips"></div>
+    <div class="mask">
+      <div class="load"></div>
+    </div>
+    <script src="./js/tips.js"></script>
+    <script src="./js/http.js"></script>
+    <script src="./js/index.js"></script>
+  </body>
+</html>
