@@ -187,9 +187,9 @@ function btn4() {
         const extextraCtx = extraCanvas.getContext("2d");
         for (let i = 0; i < width; i++) {
           for (let j = 0; j < height; j++) {
-            extextraCtx.moveTo(i, j);
+            // extextraCtx.moveTo(j, i);
             extextraCtx.fillStyle = arr[index];
-            extextraCtx.fillRect(i, j, 1, 1);
+            extextraCtx.fillRect(j, i, 1, 1);
             index++;
           }
         }
@@ -265,6 +265,8 @@ function checkFile(fileItem) {
   if (isImage(type) && isLimitImageType(type)) {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(fileItem);
+    console.log(fileItem);
+    console.log(fileReader);
     fileReader.onload = () => {
       const img = new Image();
       img.src = fileReader.result;

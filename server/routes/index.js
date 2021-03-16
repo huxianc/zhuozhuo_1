@@ -14,15 +14,14 @@ module.exports = app => {
     filename(req, file, cb) {
       console.log(file);
       const name = utils.createHash();
-      file.hashname = name;
-      cb(null, name);
+      file.hashname = name + '.png';
+      cb(null, file.hashname);
     },
   });
   // const upload = multer({ dest: __dirname + "/../uploads" });
 
   const upload = multer({ storage });
   app.post("/uploadImage", upload.single("file"), async (req, res) => {
-    // console.log(req.file);
     const file = req.file;
 
     res.send({
